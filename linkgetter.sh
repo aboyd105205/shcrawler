@@ -14,6 +14,12 @@ cd "$outdir"
 
 debug=false
 
+siteName() {
+	sitename=$1
+	# remove trailing forward slashes, replace /. with /_, remove http(s)://, remove www.
+	echo $sitename | sed -E -e "s/\/$//" -e "s/\/\./\/_/g" -e "s/^https?:\/\///" -e "s/^www\.//"
+}
+
 getLinks() {
 	for i in $@; do
 		wget -qO htmldump.tmp $i && echo "Downloaded $i"
@@ -65,5 +71,10 @@ getLinks() {
 		rm *.tmp
 	fi
 }
+
+if [[ $1 = "--sitename" ]]; then
+	echo $(siteName $2)
+	exit 0
+fi
 
 getLinks $@
