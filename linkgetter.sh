@@ -35,6 +35,10 @@ getLinks() {
 		sed -i -E "s/https?:\/\///g" urlfilter.tmp
 		# remove www.
 		sed -i "s/^www.//g" urlfilter.tmp
+		# replace leading periods
+		sed -i "s/\/\./\/_/g" urlfilter.tmp
+		# remove ending forward slashes
+		sed -i "s/\/$//g" urlfilter.tmp
 
 		page=$(head -n 1 urlfilter.tmp)
 		sed -i "1 s/\/.*//" urlfilter.tmp
