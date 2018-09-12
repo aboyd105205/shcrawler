@@ -85,9 +85,9 @@ getLinks() {
 	done
 	
 	#get rid of temp data
-	if [ $debug = false ]; then
-		find ./ -name ".tmp" -exec rm -f
-	fi
+	#if [ $debug = false ]; then
+	##	find ./ -name ".tmp" -exec rm -f {} \;
+	#fi
 }
 
 if [[ $1 = "--sitename" ]]; then
