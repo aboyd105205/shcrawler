@@ -24,7 +24,7 @@ siteName() {
 list=visited.sites
 
 siteVisited() {
-	if grep -q $1 "$list"; then
+	if grep -q $(siteName $i) "$list"; then
 		echo true
 	fi
 }
