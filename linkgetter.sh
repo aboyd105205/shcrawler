@@ -61,6 +61,8 @@ getLinks() {
 		sed -i "s/\/\./\/_/g" urlfilter.tmp
 		# remove ending forward slashes
 		sed -i "s/\/$//g" urlfilter.tmp
+		# remove trailing #s
+		sed -i "s/#$//g" urlfilter.tmp
 
 		page=$(head -n 1 urlfilter.tmp)
 		sed -i "1 s/\/.*//" urlfilter.tmp
@@ -84,7 +86,7 @@ getLinks() {
 	
 	#get rid of temp data
 	if [ $debug = false ]; then
-		rm *.tmp
+		find ./ -name ".tmp" -exec rm -f
 	fi
 }
 
