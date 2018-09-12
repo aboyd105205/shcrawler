@@ -16,12 +16,28 @@ debug=false
 
 siteName() {
 	sitename=$1
-	# remove trailing forward slashes, replace /. with /_, remove http(s)://, remove www.
-	echo $sitename | sed -E -e "s/\/$//" -e "s/\/\./\/_/g" -e "s/^https?:\/\///" -e "s/^www\.//"
+	# remove trailing forward slashes, replace /. with /_, remove http(s)://, remove www., remove trailing #
+	echo $sitename | sed -E -e "s/\/$//" -e "s/\/\./\/_/g" -e "s/^https?:\/\///" -e "s/^www\.//" -e "s/#$//"
+}
+
+# site re-visiting prevention
+list=visited.sites
+
+siteVisited() {
+	if grep -q $1 "$list"; then
+		echo true
+	fi
 }
 
 getLinks() {
 	for i in $@; do
+
+		if [[ $(siteVisited $i) = true ]]; then
+			continue
+		else
+			echo $(siteName $i) >> $list
+		fi
+
 		wget -qO htmldump.tmp $i && echo "Downloaded $i"
 
 		# make sure we arent appending to an old file
@@ -74,6 +90,11 @@ getLinks() {
 
 if [[ $1 = "--sitename" ]]; then
 	echo $(siteName $2)
+	exit 0
+fi
+
+if [[ $1 = "--sitevisited" ]]; then
+	echo $(siteVisited $2)
 	exit 0
 fi
 
