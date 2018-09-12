@@ -6,9 +6,12 @@ cd $(dirname ${BASH_SOURCE[0]})
 cd data
 
 visitAllLinks() {
-	cat * | \
-	while read url; do
-		../linkgetter.sh $url
+	shopt -s globstar # Enable globstar
+	for x in **/*.links; do # Whitespace-safe and recursive
+		cat "$x" | \
+		while read url; do
+			../linkgetter.sh $url
+		done
 	done
 }
 
